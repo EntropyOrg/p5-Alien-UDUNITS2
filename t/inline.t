@@ -42,11 +42,8 @@ SKIP: {
 			return m_value;
 		}
 	},
-		ENABLE => AUTOWRAP => @inc_built
-#, LIBS => "-LC:/strawberry/perl/site/lib/auto/share/dist/Alien-UDUNITS2/lib -ludunits2 -lexpat"
-	);
+		ENABLE => AUTOWRAP => @inc_built );
 	$built_unitsdb ||= Alien::UDUNITS2->new->units_xml;
-	#"C:/strawberry/perl/site/lib/auto/share/dist/Alien-UDUNITS2/share/udunits/udunits2.xml";
 
 	# 100 inches is 2.54 metres
 	is( convert_inch_to_metre($built_unitsdb, 100), 2.54 , 'covert 100 inches to metres');
