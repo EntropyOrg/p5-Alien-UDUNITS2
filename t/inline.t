@@ -8,8 +8,11 @@ use Alien::UDUNITS2;
 # for dev testing, get the headers out of the build directory
 my ($built_udunits2) = glob '_alien/udunits-*/lib/udunits2.h';
 my ($built_unitsdb) = glob '_alien/udunits-*/lib/udunits2.xml';
-my $built_dir = File::Spec->rel2abs(dirname($built_udunits2));
-my @inc_built = defined $built_udunits2 && -f $built_udunits2 ? (INC => "-I$built_dir") : ();
+my @inc_built = ();
+if( -f $built_udunits ) {
+	my $built_dir =  File::Spec->rel2abs(dirname($built_udunits2));
+	@inc_built = (INC => "-I$built_dir")
+}
 
 SKIP: {
 	eval { load 'Inline::C' } or do {
@@ -18,6 +21,7 @@ SKIP: {
 	};
 
 	plan tests => 1;
+	
 
 	Inline->import( with => qw(Alien::UDUNITS2) );
 	Inline->bind( C => q{
@@ -38,7 +42,11 @@ SKIP: {
 			return m_value;
 		}
 	},
-		ENABLE => AUTOWRAP => @inc_built);
+		ENABLE => AUTOWRAP => @inc_built
+#, LIBS => "-LC:/strawberry/perl/site/lib/auto/share/dist/Alien-UDUNITS2/lib -ludunits2 -lexpat"
+	);
+	$built_unitsdb ||= Alien::UDUNITS2->new->units_xml;
+	#"C:/strawberry/perl/site/lib/auto/share/dist/Alien-UDUNITS2/share/udunits/udunits2.xml";
 
 	# 100 inches is 2.54 metres
 	is( convert_inch_to_metre($built_unitsdb, 100), 2.54 , 'covert 100 inches to metres');

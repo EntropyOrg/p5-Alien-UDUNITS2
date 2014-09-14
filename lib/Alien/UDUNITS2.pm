@@ -3,8 +3,12 @@ package Alien::UDUNITS2;
 use strict;
 use warnings;
 
-use parent qw(Alien::Base Exporter);
+require Alien::Base;
+require Exporter;
+our @ISA = qw(Alien::Base Exporter);
 our @EXPORT_OK = qw(Inline);
+use Perl::OSType qw(os_type);
+use File::Spec;
 
 sub Inline {
 	return unless $_[-1] eq 'C'; # Inline's error message is good
@@ -14,6 +18,36 @@ sub Inline {
 		INC => $self->cflags,
 		AUTO_INCLUDE => '#include "udunits2.h"',
 	};
+}
+
+sub libs {
+	my ($self) = @_;
+	if( os_type() eq 'Windows' ) {
+		my $libs = "";
+		my @L = map { ("-L$_\\lib", "-L$_\\lib\\.libs") } $self->paths;
+		$libs .= join " ", @L;
+		$libs .= " -ludunits2 -lexpat";
+		return $libs;
+	}
+	$self->SUPER::libs;
+}
+
+sub paths {
+	my ($self) = @_;
+	my @I = grep { s/^-I// } $self->split_flags( $self->SUPER::cflags );
+	map {
+		if( $_ =~ /include$/ ) {
+			File::Spec->rel2abs( File::Spec->catfile( $_, '..' ) );
+		} else {
+			$_;
+		}
+	} @I;
+}
+
+sub units_xml {
+	my ($self) = @_;
+	my ($file) = grep { -f } map { ( "$_/share/udunits/udunits2.xml", "$_/lib/udunits2.xml" ) } $self->paths;
+	$file;
 }
 
 1;
