@@ -4,13 +4,15 @@ author:
   - 'Zakariyya Mughal <zmughal@cpan.org>'
 build_requires:
   File::Basename: 0
+  Inline: 0.67
+  Inline::C: 0.62
   Module::Load: 0
   Test::More: 0
 configure_requires:
   Alien::Base: 0.005
   File::ShareDir: 1.03
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.133380'
+generated_by: 'Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.133380'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -28,4 +30,4 @@ requires:
 resources:
   homepage: https://github.com/zmughal/p5-Alien-UDUNITS2
   repository: https://github.com/zmughal/p5-Alien-UDUNITS2.git
-version: 0.001
+version: 0.002

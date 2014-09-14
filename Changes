@@ -1,2 +1,5 @@
+0.002 2014-09-14 17:31:48-0500 
+  - make sure Inline::C test is run
+
 0.001 2014-09-14 17:09:43-0500
   - initial release
