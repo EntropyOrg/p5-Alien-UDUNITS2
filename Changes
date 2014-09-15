@@ -1,3 +1,6 @@
+0.003 2014-09-14 21:38:28-0500
+  - fix testing: floating point equality
+ 
 0.002 2014-09-14 17:31:48-0500 
   - make sure Inline::C test is run
 
