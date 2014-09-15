@@ -46,7 +46,8 @@ SKIP: {
 	$built_unitsdb ||= Alien::UDUNITS2->new->units_xml;
 
 	# 100 inches is 2.54 metres
-	is( convert_inch_to_metre($built_unitsdb, 100), 2.54 , 'covert 100 inches to metres');
+	my $eps = 1e-10;
+	ok( abs(convert_inch_to_metre($built_unitsdb, 100) - 2.54) < $eps, 'covert 100 inches to metres');
 }
 
 done_testing;
