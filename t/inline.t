@@ -4,6 +4,7 @@ use File::Basename;
 use File::Spec;
 
 use Alien::UDUNITS2;
+use Test::Number::Delta;
 
 # for dev testing, get the headers out of the build directory
 my ($built_udunits2) = glob '_alien/udunits-*/lib/udunits2.h';
@@ -47,7 +48,7 @@ SKIP: {
 
 	# 100 inches is 2.54 metres
 	my $eps = 1e-10;
-	ok( abs(convert_inch_to_metre($built_unitsdb, 100) - 2.54) < $eps, 'covert 100 inches to metres');
+	delta_within( convert_inch_to_metre($built_unitsdb, 100), 2.54, $eps, 'covert 100 inches to metres');
 }
 
 done_testing;
