@@ -1,5 +1,5 @@
 package Alien::UDUNITS2;
-$Alien::UDUNITS2::VERSION = '0.003';
+$Alien::UDUNITS2::VERSION = '0.004';
 use strict;
 use warnings;
 
@@ -23,30 +23,17 @@ sub Inline {
 sub libs {
 	my ($self) = @_;
 	if( os_type() eq 'Windows' ) {
-		my $libs = "";
-		my @L = map { ("-L$_\\lib", "-L$_\\lib\\.libs") } $self->paths;
-		$libs .= join " ", @L;
-		$libs .= " -ludunits2 -lexpat";
+		my $libs = $self->SUPER::libs;
+		$libs .= " -lexpat";
 		return $libs;
 	}
 	$self->SUPER::libs;
 }
 
-sub paths {
-	my ($self) = @_;
-	my @I = grep { s/^-I// } $self->split_flags( $self->SUPER::cflags );
-	map {
-		if( $_ =~ /include$/ ) {
-			File::Spec->rel2abs( File::Spec->catfile( $_, '..' ) );
-		} else {
-			$_;
-		}
-	} @I;
-}
-
 sub units_xml {
 	my ($self) = @_;
-	my ($file) = grep { -f } map { ( "$_/share/udunits/udunits2.xml", "$_/lib/udunits2.xml" ) } $self->paths;
+	my ($file) = grep { -f } map { ( "$_/share/udunits/udunits2.xml", "$_/lib/udunits2.xml" ) } ($self->dist_dir);
+
 	$file;
 }
 
@@ -62,7 +49,7 @@ Alien::UDUNITS2 - Alien package for the UDUNITS-2 physical unit manipulation and
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 Inline support
 
