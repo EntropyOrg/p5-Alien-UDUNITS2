@@ -1,5 +1,5 @@
 package Alien::UDUNITS2::Install::Files;
-$Alien::UDUNITS2::Install::Files::VERSION = '0.004';
+$Alien::UDUNITS2::Install::Files::VERSION = '0.005';
 # allows other packages to use ExtUtils::Depends like so:
 #   use ExtUtils::Depends;
 #   my $p = new ExtUtils::Depends MyMod, Alien::UDUNITS2;
@@ -24,7 +24,7 @@ Alien::UDUNITS2::Install::Files
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 
