@@ -33,4 +33,4 @@ requires:
 resources:
   homepage: https://github.com/EntropyOrg/p5-Alien-UDUNITS2
   repository: https://github.com/EntropyOrg/p5-Alien-UDUNITS2.git
-version: '0.005'
+version: '0.006'
