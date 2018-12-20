@@ -10,29 +10,54 @@ our @EXPORT_OK = qw(Inline);
 use Perl::OSType qw(os_type);
 use File::Spec;
 
-sub Inline {
-	return unless $_[-1] eq 'C'; # Inline's error message is good
-	my $self = __PACKAGE__->new;
-	+{
-		LIBS => $self->libs,
-		INC => $self->cflags,
-		AUTO_INCLUDE => '#include "udunits2.h"',
-	};
+sub inline_auto_include {
+	[ 'udunits2.h' ];
+}
+
+sub cflags {
+	my ($class) = @_;
+
+	$class->install_type eq 'share'
+		? '-I' . File::Spec->catfile($class->dist_dir, qw(include))
+		: $class->SUPER::cflags;
 }
 
 sub libs {
-	my ($self) = @_;
-	if( os_type() eq 'Windows' ) {
-		my $libs = $self->SUPER::libs;
-		$libs .= " -lexpat";
-		return $libs;
-	}
-	$self->SUPER::libs;
+	my ($class) = @_;
+
+	my $path = $class->install_type eq 'share'
+		? '-L' . File::Spec->catfile($class->dist_dir, qw(lib))
+		: $class->SUPER::cflags;
+
+	join ' ', (
+		$path,
+		'-ludunits2',
+		($^O eq 'MSWin32' ? '-lexpat' : '')
+	);
+
+}
+
+sub Inline {
+	return unless $_[-1] eq 'C'; # Inline's error message is good
+	my $params = Alien::Base::Inline(@_);
 }
 
 sub units_xml {
 	my ($self) = @_;
-	my ($file) = grep { -f } map { ( "$_/share/udunits/udunits2.xml", "$_/lib/udunits2.xml" ) } ($self->dist_dir);
+
+	my ($file) = grep
+		{ -f }
+		map {
+			(
+				"$_/share/xml/udunits/udunits2.xml",
+				"$_/share/udunits/udunits2.xml",
+				"$_/lib/udunits2.xml"
+			)
+		} (
+			$self->install_type eq 'share'
+			? $self->dist_dir
+			: "/usr"
+		);
 
 	$file;
 }
