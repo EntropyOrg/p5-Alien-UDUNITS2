@@ -32,14 +32,33 @@ sub libs {
 	join ' ', (
 		$path,
 		'-ludunits2',
-		($^O eq 'MSWin32' ? '-lexpat' : '')
+		( $^O eq 'darwin' || $^O eq 'MSWin32' ? '-lexpat' : '')
 	);
 
 }
 
 sub Inline {
-	return unless $_[-1] eq 'C'; # Inline's error message is good
+	my ($class, $lang) = @_;
+	return unless $lang eq 'C'; # Inline's error message is good
 	my $params = Alien::Base::Inline(@_);
+
+	# Use static linking instead of dynamic linking. This works
+	# better on some platforms. On macOS, to use dynamic linking,
+	# the `install_name` of the library must be set, but since this
+	# is the final path by default, linking to the `.dylib` under
+	# `blib/` at test time does not work without using `@rpath`.
+	if( $^O eq 'darwin' and $class->install_type eq 'share' ) {
+		$params->{MYEXTLIB} .= ' ' .
+			join( " ",
+				map { File::Spec->catfile(
+					File::Spec->rel2abs($class->dist_dir),
+					'lib',  $_ ) }
+				qw(libudunits2.a)
+			);
+		$params->{LIBS} =~ s/-ludunits2//g;
+	}
+
+	$params;
 }
 
 sub units_xml {
