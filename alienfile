@@ -8,8 +8,7 @@ share {
 	requires 'Alien::gmake' => 0.14;
 
 	plugin Download => (
-		url => 'ftp://ftp.unidata.ucar.edu/pub/udunits/',
-		version => qr/udunits-([\d\.]+)\.tar\.gz/,
+		url => 'https://www.unidata.ucar.edu/downloads/udunits/udunits-2.2.26.tar.gz',
 	);
 
 	plugin Extract => 'tar.gz';
