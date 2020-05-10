@@ -1,7 +1,6 @@
 package Alien::UDUNITS2;
-$Alien::UDUNITS2::VERSION = '0.006_01'; # TRIAL
-
-$Alien::UDUNITS2::VERSION = '0.00601';use strict;
+$Alien::UDUNITS2::VERSION = '0.007';
+use strict;
 use warnings;
 
 require Alien::Base;
@@ -94,7 +93,7 @@ Alien::UDUNITS2 - Alien package for the UDUNITS-2 physical unit manipulation and
 
 =head1 VERSION
 
-version 0.006_01
+version 0.007
 
 =head1 Inline support
 
