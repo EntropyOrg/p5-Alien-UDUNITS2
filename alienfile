@@ -8,7 +8,7 @@ share {
 	requires 'Alien::gmake' => 0.14;
 
 	plugin Download => (
-		url => 'https://www.unidata.ucar.edu/downloads/udunits/',
+		url => 'https://artifacts.unidata.ucar.edu/service/rest/repository/browse/downloads-udunits/',
 		version => qr/udunits-([\d\.]+)\.tar\.gz/,
 	);
 
