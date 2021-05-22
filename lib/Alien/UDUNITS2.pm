@@ -14,29 +14,6 @@ sub inline_auto_include {
 	[ 'udunits2.h' ];
 }
 
-sub cflags {
-	my ($class) = @_;
-
-	$class->install_type eq 'share'
-		? '-I' . File::Spec->catfile($class->dist_dir, qw(include))
-		: $class->SUPER::cflags;
-}
-
-sub libs {
-	my ($class) = @_;
-
-	my $path = $class->install_type eq 'share'
-		? '-L' . File::Spec->catfile($class->dist_dir, qw(lib))
-		: $class->SUPER::cflags;
-
-	join ' ', (
-		$path,
-		'-ludunits2',
-		( $^O eq 'darwin' || $^O eq 'MSWin32' ? '-lexpat' : '')
-	);
-
-}
-
 sub Inline {
 	my ($class, $lang) = @_;
 	return unless $lang eq 'C'; # Inline's error message is good
