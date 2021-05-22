@@ -1,7 +1,5 @@
 use alienfile;
 
-use Config;
-
 plugin 'PkgConfig' => 'udunits';
 
 share {
@@ -12,17 +10,6 @@ share {
 		version => qr/udunits-([\d\.]+)\.tar\.gz/,
 	);
 
-	meta->around_hook(
-		prefer => sub {
-			my $orig = shift;
-			my $build = shift;
-			my $data = $orig->($build, @_);
-			@{ $data->{list} } = grep {
-				$_->{url} =~ /^https/;
-			} @{ $data->{list} };
-			$data;
-		},
-	);
 
 	plugin Extract => 'tar.gz';
 
