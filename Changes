@@ -1,5 +1,6 @@
 0.008 «»
   - Update download URL.
+  - Extract cflags/libs for share install to alienfile.
 
 0.007 2020-05-10 16:39:02-0500
   - No changes since 0.006_01.
