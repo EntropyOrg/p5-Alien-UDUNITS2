@@ -8,7 +8,7 @@ Alien::UDUNITS2 - Alien package for the UDUNITS-2 physical unit manipulation and
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 Inline support
 
